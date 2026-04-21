@@ -326,6 +326,118 @@ body {
   font-size: 15px; border: 2px solid #fff;
 }
 
+/* ── EIGEN PLANNEN ── */
+.planner-section { padding: 0 16px 32px; }
+.planner-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px; margin-top: 4px;
+}
+.planner-divider span {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink3); white-space: nowrap;
+}
+.planner-divider-line { flex: 1; height: 1px; background: var(--line); }
+
+.new-plan-btn {
+  width: 100%; padding: 13px 16px;
+  background: var(--surface); border: 1px dashed rgba(17,17,16,0.2);
+  border-radius: 12px; cursor: pointer;
+  font-family: 'Geist', sans-serif; font-size: 14px;
+  color: var(--ink3); display: flex; align-items: center;
+  gap: 8px; justify-content: center; transition: all 0.12s;
+  margin-bottom: 12px;
+}
+.new-plan-btn:active { background: var(--bg); }
+
+.plan-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 12px; overflow: hidden; margin-bottom: 12px;
+}
+.plan-card-header {
+  padding: 12px 16px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px;
+}
+.plan-name-input {
+  flex: 1; border: none; background: transparent;
+  font-family: 'Cormorant', serif; font-size: 20px;
+  font-weight: 300; font-style: italic; color: var(--ink);
+  outline: none; min-width: 0;
+}
+.plan-name-input::placeholder { color: var(--ink3); }
+.plan-delete-btn {
+  border: none; background: none; cursor: pointer;
+  color: var(--ink3); font-size: 18px; padding: 2px 4px;
+  line-height: 1; flex-shrink: 0;
+}
+
+.plan-search-wrap { padding: 10px 16px; border-bottom: 1px solid var(--line2); }
+.plan-search-inner {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: 8px; padding: 7px 12px;
+}
+.plan-search-inner svg { color: var(--ink3); flex-shrink: 0; }
+.plan-search-inner input {
+  flex: 1; border: none; background: transparent;
+  font-family: 'Geist', sans-serif; font-size: 13px;
+  color: var(--ink); outline: none;
+}
+.plan-search-inner input::placeholder { color: var(--ink3); }
+
+.plan-search-results {
+  border-bottom: 1px solid var(--line2);
+  max-height: 180px; overflow-y: auto;
+}
+.plan-search-result {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 16px; border-bottom: 1px solid var(--line2);
+  cursor: pointer; transition: background 0.1s;
+}
+.plan-search-result:last-child { border-bottom: none; }
+.plan-search-result:active { background: var(--bg); }
+.plan-search-result-name { font-size: 13px; color: var(--ink); }
+.plan-search-result-wijk { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+.plan-add-icon { color: var(--ink3); font-size: 18px; flex-shrink: 0; }
+
+.plan-stops { min-height: 40px; }
+.plan-stop {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 16px; border-bottom: 1px solid var(--line2);
+  background: var(--surface); cursor: grab;
+  transition: background 0.1s;
+}
+.plan-stop:last-child { border-bottom: none; }
+.plan-stop.dragging { opacity: 0.4; background: var(--bg); }
+.plan-stop.drag-over { border-top: 2px solid var(--pink); }
+.drag-handle { color: var(--ink3); font-size: 14px; cursor: grab; flex-shrink: 0; user-select: none; }
+.plan-stop-name { flex: 1; font-size: 14px; font-weight: 400; color: var(--ink); }
+.plan-stop-wijk { font-size: 11px; color: var(--ink3); }
+.plan-remove-btn {
+  border: none; background: none; cursor: pointer;
+  color: var(--ink3); font-size: 16px; padding: 2px 4px;
+  line-height: 1; flex-shrink: 0;
+}
+
+.plan-empty {
+  padding: 16px; text-align: center;
+  font-size: 13px; color: var(--ink3); font-weight: 300;
+}
+
+.plan-card-footer {
+  padding: 10px 16px; border-top: 1px solid var(--line);
+  display: flex; gap: 8px;
+}
+.plan-maps-btn {
+  flex: 1; padding: 10px;
+  background: var(--ink); color: #fff; border: none;
+  border-radius: 8px; font-family: 'Geist', sans-serif;
+  font-size: 13px; cursor: pointer; text-align: center;
+  text-decoration: none; display: flex; align-items: center;
+  justify-content: center; gap: 6px;
+}
+.plan-maps-btn:active { opacity: 0.8; }
+.plan-maps-btn.disabled { background: var(--line); color: var(--ink3); pointer-events: none; }
+
 /* ── TAB BAR ── */
 .tabbar {
   background: var(--surface);
@@ -421,10 +533,20 @@ body {
         <a class="dag-stop" href="https://www.google.com/maps/search/?api=1&query=Delacorte+Theater+Central+Park" target="_blank"><div class="dag-dot"></div><div class="dag-stop-name">Shakespeare in the Park</div><div class="dag-arrow">↗</div></a>
       </div>
     </div>
+
+    <!-- EIGEN PLANNEN -->
+    <div class="planner-section">
+      <div class="planner-divider">
+        <div class="planner-divider-line"></div>
+        <span>Eigen plannen</span>
+        <div class="planner-divider-line"></div>
+      </div>
+      <button class="new-plan-btn" onclick="addPlan()">＋ Nieuw dagplan</button>
+      <div id="plans-container"></div>
+    </div>
+
   </div>
 </div>
-
-<!-- ══ PAGE: KAART ══ -->
 <div id="page-kaart" class="page">
   <div class="header">
     <div class="header-eyebrow">Overzicht</div>
@@ -702,9 +824,194 @@ function buildMapCatFilters() {
   });
 }
 
-// ── INIT ──
-render();
-buildMapCatFilters();
+// ── EIGEN PLANNEN ──
+let plans = JSON.parse(localStorage.getItem("nyc-plans") || "[]");
+let dragSrc = null;
+
+function savePlans() {
+  try { localStorage.setItem("nyc-plans", JSON.stringify(plans)); } catch(e) {}
+}
+
+function addPlan() {
+  plans.push({ id: Date.now(), name: "", stops: [] });
+  savePlans();
+  renderPlans();
+  // Focus the name input of new plan
+  setTimeout(() => {
+    const inputs = document.querySelectorAll(".plan-name-input");
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  }, 50);
+}
+
+function deletePlan(id) {
+  plans = plans.filter(p => p.id !== id);
+  savePlans();
+  renderPlans();
+}
+
+function addStop(planId, place) {
+  const plan = plans.find(p => p.id === planId);
+  if (!plan) return;
+  if (plan.stops.find(s => s.name === place.name)) return;
+  plan.stops.push({ name: place.name, wijk: place.wijk, q: place.q, lat: place.lat, lng: place.lng });
+  savePlans();
+  renderPlans();
+}
+
+function removeStop(planId, stopName) {
+  const plan = plans.find(p => p.id === planId);
+  if (!plan) return;
+  plan.stops = plan.stops.filter(s => s.name !== stopName);
+  savePlans();
+  renderPlans();
+}
+
+function openMapsRoute(plan) {
+  if (plan.stops.length === 0) return;
+  const base = "https://www.google.com/maps/dir/";
+  const stops = plan.stops.map(s => encodeURIComponent(s.q)).join("/");
+  window.open(base + stops, "_blank");
+}
+
+function renderPlans() {
+  const container = document.getElementById("plans-container");
+  container.innerHTML = "";
+
+  plans.forEach(plan => {
+    const card = document.createElement("div");
+    card.className = "plan-card";
+
+    // Header
+    card.innerHTML = `
+      <div class="plan-card-header">
+        <input class="plan-name-input" placeholder="Naam van je dag…" value="${plan.name}"
+          oninput="plans.find(p=>p.id===${plan.id}).name=this.value; savePlans();">
+        <button class="plan-delete-btn" onclick="deletePlan(${plan.id})">×</button>
+      </div>`;
+
+    // Search
+    const searchWrap = document.createElement("div");
+    searchWrap.className = "plan-search-wrap";
+    searchWrap.innerHTML = `
+      <div class="plan-search-inner">
+        <svg width="13" height="13" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Zoek een locatie om toe te voegen…"
+          oninput="renderSearchResults(${plan.id}, this.value, this)"
+          autocomplete="off" spellcheck="false">
+      </div>`;
+    card.appendChild(searchWrap);
+
+    // Search results (hidden by default)
+    const searchResults = document.createElement("div");
+    searchResults.className = "plan-search-results";
+    searchResults.id = "search-results-" + plan.id;
+    searchResults.style.display = "none";
+    card.appendChild(searchResults);
+
+    // Stops list
+    const stopsList = document.createElement("div");
+    stopsList.className = "plan-stops";
+    stopsList.id = "stops-" + plan.id;
+
+    if (plan.stops.length === 0) {
+      stopsList.innerHTML = '<div class="plan-empty">Nog geen stops — zoek hierboven</div>';
+    } else {
+      plan.stops.forEach((stop, idx) => {
+        const stopEl = document.createElement("div");
+        stopEl.className = "plan-stop";
+        stopEl.draggable = true;
+        stopEl.dataset.idx = idx;
+        stopEl.dataset.planId = plan.id;
+        stopEl.innerHTML = `
+          <span class="drag-handle">⠿</span>
+          <div style="flex:1;min-width:0">
+            <div class="plan-stop-name">${stop.name}</div>
+            <div class="plan-stop-wijk">${stop.wijk}</div>
+          </div>
+          <button class="plan-remove-btn" onclick="removeStop(${plan.id},'${stop.name.replace(/'/g,"\\'")}')">×</button>`;
+
+        // Drag events
+        stopEl.addEventListener("dragstart", e => {
+          dragSrc = stopEl;
+          stopEl.classList.add("dragging");
+          e.dataTransfer.effectAllowed = "move";
+        });
+        stopEl.addEventListener("dragend", () => {
+          stopEl.classList.remove("dragging");
+          document.querySelectorAll(".plan-stop").forEach(s => s.classList.remove("drag-over"));
+        });
+        stopEl.addEventListener("dragover", e => {
+          e.preventDefault();
+          document.querySelectorAll(".plan-stop").forEach(s => s.classList.remove("drag-over"));
+          if (dragSrc !== stopEl) stopEl.classList.add("drag-over");
+        });
+        stopEl.addEventListener("drop", e => {
+          e.preventDefault();
+          if (!dragSrc || dragSrc === stopEl) return;
+          const fromPlanId = parseInt(dragSrc.dataset.planId);
+          const fromIdx = parseInt(dragSrc.dataset.idx);
+          const toIdx = parseInt(stopEl.dataset.idx);
+          if (fromPlanId !== plan.id) return;
+          const p = plans.find(pl => pl.id === plan.id);
+          const [moved] = p.stops.splice(fromIdx, 1);
+          p.stops.splice(toIdx, 0, moved);
+          savePlans();
+          renderPlans();
+        });
+
+        stopsList.appendChild(stopEl);
+      });
+    }
+    card.appendChild(stopsList);
+
+    // Footer with Maps button
+    const footer = document.createElement("div");
+    footer.className = "plan-card-footer";
+    const hasStops = plan.stops.length >= 2;
+    footer.innerHTML = `
+      <a class="plan-maps-btn ${hasStops ? "" : "disabled"}"
+        ${hasStops ? `href="javascript:void(0)" onclick="openMapsRoute(plans.find(p=>p.id===${plan.id}))"` : ""}">
+        🗺 Open route in Maps ${plan.stops.length >= 2 ? "(" + plan.stops.length + " stops)" : "(min. 2 stops)"}
+      </a>`;
+    card.appendChild(footer);
+
+    container.appendChild(card);
+  });
+}
+
+function renderSearchResults(planId, query, inputEl) {
+  const resultsEl = document.getElementById("search-results-" + planId);
+  if (!query.trim()) { resultsEl.style.display = "none"; return; }
+
+  const q = query.toLowerCase();
+  const matches = places.filter(p =>
+    p.name.toLowerCase().includes(q) || p.wijk.toLowerCase().includes(q)
+  ).slice(0, 6);
+
+  if (matches.length === 0) { resultsEl.style.display = "none"; return; }
+
+  resultsEl.style.display = "block";
+  resultsEl.innerHTML = "";
+  matches.forEach(place => {
+    const row = document.createElement("div");
+    row.className = "plan-search-result";
+    row.innerHTML = `
+      <div>
+        <div class="plan-search-result-name">${place.name}</div>
+        <div class="plan-search-result-wijk">${place.wijk}</div>
+      </div>
+      <span class="plan-add-icon">＋</span>`;
+    row.onclick = () => {
+      addStop(planId, place);
+      inputEl.value = "";
+      resultsEl.style.display = "none";
+    };
+    resultsEl.appendChild(row);
+  });
+}
+
+renderPlans();
+
 </script>
 </body>
 </html>
