@@ -658,15 +658,28 @@ body {
 <script>
 // ── DATA ──
 const places = [
+  // ── OBSERVATORIES ──
   { name:"One World Observatory", wijk:"Financial District", cat:"Observatory", prijs:"€41", free:false, q:"One World Observatory New York", lat:40.7130, lng:-74.0132 },
   { name:"Empire State Building", wijk:"Garment District", cat:"Observatory", prijs:"€67", free:false, q:"Empire State Building New York", lat:40.7484, lng:-73.9857 },
   { name:"Edge NYC", wijk:"Hudson Yards", cat:"Observatory", prijs:"€29", free:false, q:"Edge NYC Hudson Yards", lat:40.7534, lng:-74.0011 },
   { name:"Rockefeller Center", wijk:"Midtown", cat:"Observatory", prijs:"€38", free:false, q:"Rockefeller Center New York", lat:40.7587, lng:-73.9787 },
+  { name:"Summit One Vanderbilt", wijk:"Midtown", cat:"Observatory", prijs:null, free:false, q:"Summit One Vanderbilt New York", lat:40.7527, lng:-73.9796 },
+  // ── MUSEA ──
+  { name:"The Met", wijk:"Upper East Side", cat:"Museum", prijs:"€26", free:false, q:"Metropolitan Museum of Art New York", lat:40.7794, lng:-73.9632 },
+  { name:"MoMA", wijk:"Midtown", cat:"Museum", prijs:"€26", free:false, q:"MoMA Museum of Modern Art New York", lat:40.7614, lng:-73.9776 },
+  { name:"Guggenheim", wijk:"Upper East Side", cat:"Museum", prijs:"€26", free:false, q:"Guggenheim Museum New York", lat:40.7830, lng:-73.9590 },
+  { name:"The Frick Collection", wijk:"Upper East Side", cat:"Museum", prijs:"€26", free:false, q:"Frick Collection New York", lat:40.7711, lng:-73.9674 },
+  { name:"9/11 Memorial Museum", wijk:"Financial District", cat:"Museum", prijs:"€31", free:false, q:"9/11 Memorial Museum New York", lat:40.7116, lng:-74.0133 },
+  { name:"Ellis Island Museum", wijk:"Financial District", cat:"Museum", prijs:"€22", free:false, q:"Ellis Island Museum New York", lat:40.6993, lng:-74.0394 },
+  { name:"Brooklyn Museum", wijk:"Lower East Side", cat:"Museum", prijs:"€17", free:false, q:"Brooklyn Museum New York", lat:40.6712, lng:-73.9636 },
+  { name:"Autophoto Gallery & Museum", wijk:"Lower East Side", cat:"Museum", prijs:"€10", free:false, q:"Autophoto Gallery Museum New York", lat:40.7196, lng:-73.9901 },
+  // ── ATTRACTIES ──
   { name:"The High Line", wijk:"Meatpacking District", cat:"Attractie", prijs:"Gratis", free:true, q:"High Line New York", lat:40.7480, lng:-74.0048 },
   { name:"Brooklyn Bridge", wijk:"Financial District", cat:"Attractie", prijs:"Gratis", free:true, q:"Brooklyn Bridge New York", lat:40.7061, lng:-73.9969 },
-  { name:"DUMBO", wijk:"Brooklyn", cat:"Wijk", prijs:"Gratis", free:true, q:"DUMBO Brooklyn", lat:40.7033, lng:-73.9881 },
+  { name:"DUMBO", wijk:"Brooklyn", cat:"Attractie", prijs:"Gratis", free:true, q:"DUMBO Brooklyn", lat:40.7033, lng:-73.9881 },
   { name:"Bryant Park", wijk:"Midtown", cat:"Attractie", prijs:"Gratis", free:true, q:"Bryant Park New York", lat:40.7535, lng:-73.9830 },
   { name:"Times Square", wijk:"Theater District", cat:"Attractie", prijs:"Gratis", free:true, q:"Times Square New York", lat:40.7580, lng:-73.9855 },
+  { name:"Times Square Art Show (23:57)", wijk:"Midtown", cat:"Attractie", prijs:"Gratis", free:true, q:"Times Square New York", lat:40.7580, lng:-73.9855 },
   { name:"The Vessel", wijk:"Hudson Yards", cat:"Attractie", prijs:"Gratis", free:true, q:"The Vessel Hudson Yards", lat:40.7538, lng:-74.0022 },
   { name:"Battery Park", wijk:"Financial District", cat:"Attractie", prijs:"Gratis", free:true, q:"Battery Park New York", lat:40.7029, lng:-74.0154 },
   { name:"Charging Bull", wijk:"Financial District", cat:"Attractie", prijs:"Gratis", free:true, q:"Charging Bull Wall Street New York", lat:40.7056, lng:-74.0134 },
@@ -677,38 +690,55 @@ const places = [
   { name:"Gossip Girl highlights", wijk:"Upper East Side", cat:"Attractie", prijs:"Gratis", free:true, q:"Gossip Girl filming locations New York", lat:40.7736, lng:-73.9566 },
   { name:"Bushwick Collective", wijk:"Brooklyn", cat:"Attractie", prijs:"Gratis", free:true, q:"Bushwick Collective Brooklyn", lat:40.7075, lng:-73.9222 },
   { name:"Prospect Park", wijk:"Brooklyn", cat:"Attractie", prijs:"Gratis", free:true, q:"Prospect Park Brooklyn", lat:40.6602, lng:-73.9690 },
-  { name:"Williamsburg", wijk:"Brooklyn", cat:"Wijk", prijs:"Gratis", free:true, q:"Williamsburg Brooklyn", lat:40.7081, lng:-73.9571 },
+  { name:"Williamsburg", wijk:"Brooklyn", cat:"Attractie", prijs:"Gratis", free:true, q:"Williamsburg Brooklyn", lat:40.7081, lng:-73.9571 },
   { name:"Grand Central Terminal", wijk:"Turtle Bay", cat:"Attractie", prijs:"Gratis", free:true, q:"Grand Central Terminal New York", lat:40.7527, lng:-73.9772 },
-  { name:"Chrysler Building", wijk:"Turtle Bay", cat:"Attractie", prijs:"Gratis", free:true, q:"Chrysler Building New York", lat:40.7516, lng:-73.9755 },
-  { name:"Hell's Kitchen Flea Market", wijk:"Hell's Kitchen", cat:"Markt", prijs:"Gratis", free:true, q:"Hell's Kitchen Flea Market New York", lat:40.7567, lng:-73.9949 },
+  { name:"Chrysler Building (lobby)", wijk:"Turtle Bay", cat:"Attractie", prijs:"Gratis", free:true, q:"Chrysler Building New York", lat:40.7516, lng:-73.9755 },
   { name:"NY Public Library", wijk:"Midtown", cat:"Attractie", prijs:"Gratis", free:true, q:"New York Public Library Midtown", lat:40.7532, lng:-73.9823 },
   { name:"Bethesda Fountain", wijk:"Central Park", cat:"Attractie", prijs:"Gratis", free:true, q:"Bethesda Fountain Central Park", lat:40.7739, lng:-73.9715 },
   { name:"Bow Bridge", wijk:"Central Park", cat:"Attractie", prijs:"Gratis", free:true, q:"Bow Bridge Central Park", lat:40.7759, lng:-73.9707 },
-  { name:"The Met", wijk:"Upper East Side", cat:"Museum", prijs:"€26", free:false, q:"Metropolitan Museum of Art New York", lat:40.7794, lng:-73.9632 },
-  { name:"MoMA", wijk:"Midtown", cat:"Museum", prijs:"€26", free:false, q:"MoMA Museum of Modern Art New York", lat:40.7614, lng:-73.9776 },
-  { name:"Guggenheim", wijk:"Upper East Side", cat:"Museum", prijs:"€26", free:false, q:"Guggenheim Museum New York", lat:40.7830, lng:-73.9590 },
-  { name:"The Frick Collection", wijk:"Upper East Side", cat:"Museum", prijs:"€26", free:false, q:"Frick Collection New York", lat:40.7711, lng:-73.9674 },
-  { name:"9/11 Memorial Museum", wijk:"Financial District", cat:"Museum", prijs:"€31", free:false, q:"9/11 Memorial Museum New York", lat:40.7116, lng:-74.0133 },
-  { name:"Ellis Island Museum", wijk:"Financial District", cat:"Museum", prijs:"€22", free:false, q:"Ellis Island Museum New York", lat:40.6993, lng:-74.0394 },
-  { name:"Brooklyn Museum", wijk:"Brooklyn", cat:"Museum", prijs:"€17", free:false, q:"Brooklyn Museum New York", lat:40.6712, lng:-73.9636 },
-  { name:"Chelsea Market", wijk:"Chelsea", cat:"Eten & drinken", prijs:null, free:false, q:"Chelsea Market New York", lat:40.7424, lng:-74.0061 },
+  // ── MARKTEN ──
+  { name:"Hell's Kitchen Flea Market", wijk:"Hell's Kitchen", cat:"Markt", prijs:"Gratis", free:true, q:"Hell's Kitchen Flea Market New York", lat:40.7567, lng:-73.9949 },
   { name:"Smorgasburg (weekend)", wijk:"Brooklyn", cat:"Markt", prijs:null, free:false, q:"Smorgasburg Williamsburg Brooklyn", lat:40.7211, lng:-73.9626 },
+  // ── ETEN & DRINKEN ──
+  { name:"Chelsea Market", wijk:"Chelsea", cat:"Eten & drinken", prijs:null, free:false, q:"Chelsea Market New York", lat:40.7424, lng:-74.0061 },
   { name:"Minetta Tavern", wijk:"Greenwich Village", cat:"Eten & drinken", prijs:null, free:false, q:"Minetta Tavern New York", lat:40.7300, lng:-74.0007 },
   { name:"Carbone", wijk:"Greenwich Village", cat:"Eten & drinken", prijs:null, free:false, q:"Carbone restaurant New York", lat:40.7280, lng:-74.0002 },
   { name:"The Smith", wijk:"Flatiron", cat:"Eten & drinken", prijs:null, free:false, q:"The Smith restaurant Flatiron New York", lat:40.7442, lng:-73.9886 },
   { name:"Carmine's", wijk:"Theater District", cat:"Eten & drinken", prijs:null, free:false, q:"Carmine's Times Square New York", lat:40.7575, lng:-73.9867 },
+  { name:"Supernova", wijk:"Times Square", cat:"Eten & drinken", prijs:null, free:false, q:"Supernova restaurant Times Square New York", lat:40.7571, lng:-73.9863 },
+  { name:"By Chloe", wijk:"Greenwich Village", cat:"Eten & drinken", prijs:null, free:false, q:"By Chloe Greenwich Village New York", lat:40.7328, lng:-74.0024 },
   { name:"Mercer Kitchen", wijk:"SoHo", cat:"Eten & drinken", prijs:null, free:false, q:"Mercer Kitchen SoHo New York", lat:40.7248, lng:-73.9986 },
   { name:"Dudley's", wijk:"Lower East Side", cat:"Eten & drinken", prijs:null, free:false, q:"Dudley's restaurant Lower East Side New York", lat:40.7181, lng:-73.9904 },
   { name:"Lady Jay's", wijk:"Brooklyn", cat:"Eten & drinken", prijs:null, free:false, q:"Lady Jay's bar Brooklyn New York", lat:40.7115, lng:-73.9468 },
+  { name:"Wonder Bagels", wijk:"Jersey City, NJ", cat:"Eten & drinken", prijs:null, free:false, q:"Wonder Bagels Jersey City NJ", lat:40.7178, lng:-74.0431 },
+  { name:"Choc o Pain French Café", wijk:"Jersey City, NJ", cat:"Eten & drinken", prijs:null, free:false, q:"Choc o Pain French Cafe Jersey City NJ", lat:40.7192, lng:-74.0476 },
+  { name:"Maman Pastries", wijk:"Jersey City, NJ", cat:"Eten & drinken", prijs:null, free:false, q:"Maman Jersey City NJ", lat:40.7185, lng:-74.0455 },
+  { name:"Razza Pizza", wijk:"Jersey City, NJ", cat:"Eten & drinken", prijs:null, free:false, q:"Razza Pizza Jersey City NJ", lat:40.7199, lng:-74.0483 },
+  { name:"Maxwell Alley", wijk:"Jersey City, NJ", cat:"Eten & drinken", prijs:null, free:false, q:"Maxwell Alley Jersey City NJ", lat:40.7208, lng:-74.0469 },
+  { name:"Satis Bistro", wijk:"Jersey City, NJ", cat:"Eten & drinken", prijs:null, free:false, q:"Satis Bistro Jersey City NJ", lat:40.7193, lng:-74.0461 },
+  { name:"CoolVines", wijk:"Jersey City, NJ", cat:"Eten & drinken", prijs:null, free:false, q:"CoolVines Jersey City NJ", lat:40.7188, lng:-74.0445 },
+  { name:"RoofTop at Exchange Place", wijk:"Jersey City, NJ", cat:"Eten & drinken", prijs:null, free:false, q:"Rooftop Exchange Place Jersey City NJ", lat:40.7163, lng:-74.0340 },
+  { name:"Van Hook Cheese & Grocery", wijk:"Jersey City, NJ", cat:"Eten & drinken", prijs:null, free:false, q:"Van Hook Cheese Grocery Jersey City NJ", lat:40.7175, lng:-74.0438 },
+  // ── UITGAAN ──
+  { name:"Gospel (Afro House)", wijk:"Midtown", cat:"Uitgaan", prijs:null, free:false, q:"Gospel nightclub New York", lat:40.7549, lng:-73.9840 },
+  { name:"Little Sister Lounge", wijk:"Midtown", cat:"Uitgaan", prijs:null, free:false, q:"Little Sister Lounge New York", lat:40.7540, lng:-73.9835 },
+  { name:"Amber Room", wijk:"Midtown", cat:"Uitgaan", prijs:null, free:false, q:"Amber Room nightclub New York", lat:40.7545, lng:-73.9842 },
+  { name:"Tao Downtown", wijk:"Flatiron", cat:"Uitgaan", prijs:null, free:false, q:"Tao Downtown New York", lat:40.7401, lng:-74.0000 },
+  { name:"Loosies", wijk:"East Village", cat:"Uitgaan", prijs:null, free:false, q:"Loosies bar East Village New York", lat:40.7264, lng:-73.9847 },
+  { name:"Marquee", wijk:"Chelsea", cat:"Uitgaan", prijs:null, free:false, q:"Marquee nightclub Chelsea New York", lat:40.7473, lng:-74.0040 },
+  { name:"Jean's (Disco/House)", wijk:"East Village", cat:"Uitgaan", prijs:null, free:false, q:"Jean's bar East Village New York", lat:40.7270, lng:-73.9850 },
+  { name:"Dullboy Speakeasy", wijk:"Midtown", cat:"Uitgaan", prijs:null, free:false, q:"Dullboy speakeasy New York", lat:40.7538, lng:-73.9830 },
+  // ── HOME ──
+  { name:"Airbnb — 245 Grove Street", wijk:"Jersey City, NJ", cat:"Home", prijs:null, free:false, q:"245 Grove Street Jersey City NJ", lat:40.7196, lng:-74.0551 },
 ];
 
-const catOrder = ["Observatory","Museum","Attractie","Wijk","Markt","Eten & drinken"];
-const catEmoji = { "Observatory":"🔭", "Museum":"🏛", "Attractie":"⭐", "Wijk":"🗺", "Markt":"🛍", "Eten & drinken":"🍽" };
+const catOrder = ["Observatory","Museum","Attractie","Markt","Eten & drinken","Uitgaan","Home"];
+const catEmoji = { "Observatory":"🔭", "Museum":"🏛", "Attractie":"⭐", "Markt":"🛍", "Eten & drinken":"🍽", "Uitgaan":"🎉", "Home":"🏠" };
 const wijken = ["Alle", ...new Set(places.map(p => p.wijk).sort())];
 const cats = ["Alle", ...catOrder.filter(c => places.some(p => p.cat === c))];
 
-let activeWijk = "Alle";
-let activeCat = "Alle";
+let activeWijken = new Set();
+let activeCats = new Set();
 let mapCat = "Alle";
 let leafletMap = null;
 let markers = [];
@@ -728,14 +758,26 @@ function switchTab(tab) {
 }
 
 // ── LOCATIES ──
-function buildChips(id, items, getActive, setActive, onChange) {
+function buildChips(id, items, activeSet, isWijk) {
   const el = document.getElementById(id);
   el.innerHTML = "";
   items.forEach(item => {
     const btn = document.createElement("button");
-    btn.className = "chip" + (getActive() === item ? " active" : "");
+    const isActive = activeSet.size === 0 ? item === "Alle" : activeSet.has(item);
+    btn.className = "chip" + (isActive ? " active" : "");
     btn.textContent = item;
-    btn.onclick = () => { setActive(item); onChange(); };
+    btn.onclick = () => {
+      if (item === "Alle") {
+        activeSet.clear();
+      } else {
+        if (activeSet.has(item)) {
+          activeSet.delete(item);
+        } else {
+          activeSet.add(item);
+        }
+      }
+      render();
+    };
     el.appendChild(btn);
   });
 }
@@ -745,13 +787,13 @@ function mapsUrl(q) {
 }
 
 function render() {
-  buildChips("wijk-filters", wijken, () => activeWijk, v => { activeWijk = v; }, render);
-  buildChips("cat-filters", cats, () => activeCat, v => { activeCat = v; }, render);
+  buildChips("wijk-filters", wijken, activeWijken, true);
+  buildChips("cat-filters", cats, activeCats, false);
 
   const q = (document.getElementById("search").value || "").toLowerCase();
   const filtered = places.filter(p =>
-    (activeWijk === "Alle" || p.wijk === activeWijk) &&
-    (activeCat === "Alle" || p.cat === activeCat) &&
+    (activeWijken.size === 0 || activeWijken.has(p.wijk)) &&
+    (activeCats.size === 0 || activeCats.has(p.cat)) &&
     (!q || p.name.toLowerCase().includes(q) || p.wijk.toLowerCase().includes(q))
   );
 
