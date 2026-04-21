@@ -7,7 +7,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>NYC 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 :root {
   --bg: #FAFAF9;
@@ -554,83 +553,6 @@ body {
   z-index: 1;
   margin-bottom: -16px;
 }
-
-/* ─── KAART PAGE ─── */
-#map {
-  width: 100%;
-  flex: 1;
-  z-index: 1;
-}
-
-.map-filters-wrap {
-  background: var(--surface);
-  border-bottom: 1px solid var(--line);
-  flex-shrink: 0;
-  z-index: 2;
-}
-
-.leaflet-popup-content-wrapper {
-  border-radius: 12px !important;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important;
-  padding: 0 !important;
-  overflow: hidden;
-}
-
-.leaflet-popup-content {
-  margin: 0 !important;
-  width: auto !important;
-}
-
-.popup-inner {
-  padding: 12px 14px;
-  min-width: 160px;
-}
-
-.popup-name {
-  font-family: 'Geist', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #111110;
-  margin-bottom: 2px;
-}
-
-.popup-wijk {
-  font-size: 12px;
-  font-weight: 300;
-  color: #999896;
-  margin-bottom: 8px;
-}
-
-.popup-btn {
-  display: block;
-  text-align: center;
-  background: #111110;
-  color: white;
-  font-family: 'Geist', sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  padding: 7px 14px;
-  border-radius: 8px;
-  text-decoration: none;
-  letter-spacing: 0.02em;
-}
-
-.leaflet-popup-tip { display: none; }
-.leaflet-popup-close-button { color: #999 !important; font-size: 18px !important; top: 6px !important; right: 8px !important; }
-
-.map-emoji-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  font-size: 15px;
-  border: 2px solid white;
-}
-
 </style>
 </head>
 <body>
@@ -858,25 +780,6 @@ body {
   </div>
 </div>
 
-
-<!-- ══════════════════════════════ PAGE: KAART ══════════════════════════════ -->
-<div id="page-kaart" class="page">
-
-  <div class="header">
-    <div class="header-eyebrow">Overzicht</div>
-    <div class="header-title">De <em>Kaart</em></div>
-    <div class="header-meta">Alle locaties in één oogopslag</div>
-  </div>
-
-  <div class="map-filters-wrap">
-    <div class="filter-label">Categorie</div>
-    <div class="filter-row" id="map-cat-filters" style="padding-bottom:12px"></div>
-  </div>
-
-  <div id="map"></div>
-
-</div>
-
 <!-- ══════════════════════════════ TAB BAR ══════════════════════════════ -->
 <div class="tabbar">
   <button class="tab active" id="tab-locaties" onclick="switchTab('locaties')">
@@ -891,7 +794,6 @@ body {
     </div>
     <span class="tab-label">Dagplan</span>
   </button>
-  <button class="tab" id="tab-kaart" onclick="switchTab('kaart')"><div class="tab-icon"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div><span class="tab-label">Kaart</span></button>
   <button class="tab" id="tab-info" onclick="switchTab('info')">
     <div class="tab-icon">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
@@ -1038,135 +940,6 @@ function switchTab(tab) {
 buildChips("wijk-filters", wijken, () => activeWijk, v => { activeWijk = v; });
 buildChips("cat-filters", cats, () => activeCat, v => { activeCat = v; });
 render();
-
-
-// ─── MAP ───
-let map = null;
-let markers = [];
-let mapCat = "Alle";
-
-const catEmoji = {
-  "Observatory": "🔭",
-  "Museum": "🏛",
-  "Attractie": "⭐",
-  "Wijk": "🗺",
-  "Markt": "🛍",
-  "Eten & drinken": "🍽"
-};
-
-const placesWithCoords = [
-  { name:"One World Observatory", wijk:"Financial District", cat:"Observatory", lat:40.7130, lng:-74.0132, q:"One World Observatory New York" },
-  { name:"Empire State Building", wijk:"Garment District", cat:"Observatory", lat:40.7484, lng:-73.9857, q:"Empire State Building New York" },
-  { name:"Edge NYC", wijk:"Hudson Yards", cat:"Observatory", lat:40.7534, lng:-74.0011, q:"Edge NYC Hudson Yards" },
-  { name:"Rockefeller Center", wijk:"Midtown", cat:"Observatory", lat:40.7587, lng:-73.9787, q:"Rockefeller Center New York" },
-  { name:"The High Line", wijk:"Meatpacking District", cat:"Attractie", lat:40.7480, lng:-74.0048, q:"High Line New York" },
-  { name:"Brooklyn Bridge", wijk:"Financial District", cat:"Attractie", lat:40.7061, lng:-73.9969, q:"Brooklyn Bridge New York" },
-  { name:"DUMBO", wijk:"Brooklyn", cat:"Wijk", lat:40.7033, lng:-73.9881, q:"DUMBO Brooklyn" },
-  { name:"Bryant Park", wijk:"Midtown", cat:"Attractie", lat:40.7535, lng:-73.9830, q:"Bryant Park New York" },
-  { name:"Times Square", wijk:"Theater District", cat:"Attractie", lat:40.7580, lng:-73.9855, q:"Times Square New York" },
-  { name:"The Vessel", wijk:"Hudson Yards", cat:"Attractie", lat:40.7538, lng:-74.0022, q:"The Vessel Hudson Yards" },
-  { name:"Battery Park", wijk:"Financial District", cat:"Attractie", lat:40.7029, lng:-74.0154, q:"Battery Park New York" },
-  { name:"Charging Bull", wijk:"Financial District", cat:"Attractie", lat:40.7056, lng:-74.0134, q:"Charging Bull Wall Street New York" },
-  { name:"Central Park", wijk:"Central Park", cat:"Attractie", lat:40.7826, lng:-73.9656, q:"Central Park New York" },
-  { name:"Staten Island Ferry", wijk:"Financial District", cat:"Attractie", lat:40.6441, lng:-74.0725, q:"Staten Island Ferry Terminal New York" },
-  { name:"Roosevelt Island Tramway", wijk:"Turtle Bay", cat:"Attractie", lat:40.7613, lng:-73.9642, q:"Roosevelt Island Tramway New York" },
-  { name:"5th Avenue", wijk:"Plaza District", cat:"Attractie", lat:40.7638, lng:-73.9730, q:"5th Avenue New York" },
-  { name:"Gossip Girl highlights", wijk:"Upper East Side", cat:"Attractie", lat:40.7736, lng:-73.9566, q:"Gossip Girl filming locations New York" },
-  { name:"Bushwick Collective", wijk:"Brooklyn", cat:"Attractie", lat:40.7075, lng:-73.9222, q:"Bushwick Collective Brooklyn" },
-  { name:"Prospect Park", wijk:"Brooklyn", cat:"Attractie", lat:40.6602, lng:-73.9690, q:"Prospect Park Brooklyn" },
-  { name:"Williamsburg", wijk:"Brooklyn", cat:"Wijk", lat:40.7081, lng:-73.9571, q:"Williamsburg Brooklyn" },
-  { name:"Grand Central Terminal", wijk:"Turtle Bay", cat:"Attractie", lat:40.7527, lng:-73.9772, q:"Grand Central Terminal New York" },
-  { name:"Chrysler Building", wijk:"Turtle Bay", cat:"Attractie", lat:40.7516, lng:-73.9755, q:"Chrysler Building New York" },
-  { name:"Hell's Kitchen Flea Market", wijk:"Hell's Kitchen", cat:"Markt", lat:40.7567, lng:-73.9949, q:"Hell's Kitchen Flea Market New York" },
-  { name:"NY Public Library", wijk:"Midtown", cat:"Attractie", lat:40.7532, lng:-73.9823, q:"New York Public Library Midtown" },
-  { name:"Bethesda Fountain", wijk:"Central Park", cat:"Attractie", lat:40.7739, lng:-73.9715, q:"Bethesda Fountain Central Park" },
-  { name:"Bow Bridge", wijk:"Central Park", cat:"Attractie", lat:40.7759, lng:-73.9707, q:"Bow Bridge Central Park" },
-  { name:"The Met", wijk:"Upper East Side", cat:"Museum", lat:40.7794, lng:-73.9632, q:"Metropolitan Museum of Art New York" },
-  { name:"MoMA", wijk:"Midtown", cat:"Museum", lat:40.7614, lng:-73.9776, q:"MoMA Museum of Modern Art New York" },
-  { name:"Guggenheim", wijk:"Upper East Side", cat:"Museum", lat:40.7830, lng:-73.9590, q:"Guggenheim Museum New York" },
-  { name:"The Frick Collection", wijk:"Upper East Side", cat:"Museum", lat:40.7711, lng:-73.9674, q:"Frick Collection New York" },
-  { name:"9/11 Memorial Museum", wijk:"Financial District", cat:"Museum", lat:40.7116, lng:-74.0133, q:"9/11 Memorial Museum New York" },
-  { name:"Ellis Island Museum", wijk:"Financial District", cat:"Museum", lat:40.6993, lng:-74.0394, q:"Ellis Island Museum New York" },
-  { name:"Brooklyn Museum", wijk:"Brooklyn", cat:"Museum", lat:40.6712, lng:-73.9636, q:"Brooklyn Museum New York" },
-  { name:"Chelsea Market", wijk:"Chelsea", cat:"Eten & drinken", lat:40.7424, lng:-74.0061, q:"Chelsea Market New York" },
-  { name:"Smorgasburg (weekend)", wijk:"Brooklyn", cat:"Markt", lat:40.7211, lng:-73.9626, q:"Smorgasburg Williamsburg Brooklyn" },
-  { name:"Minetta Tavern", wijk:"Greenwich Village", cat:"Eten & drinken", lat:40.7300, lng:-74.0007, q:"Minetta Tavern New York" },
-  { name:"Carbone", wijk:"Greenwich Village", cat:"Eten & drinken", lat:40.7280, lng:-74.0002, q:"Carbone restaurant New York" },
-  { name:"The Smith", wijk:"Flatiron", cat:"Eten & drinken", lat:40.7442, lng:-73.9886, q:"The Smith restaurant Flatiron New York" },
-  { name:"Carmine's", wijk:"Theater District", cat:"Eten & drinken", lat:40.7575, lng:-73.9867, q:"Carmine's Times Square New York" },
-  { name:"Mercer Kitchen", wijk:"SoHo", cat:"Eten & drinken", lat:40.7248, lng:-73.9986, q:"Mercer Kitchen SoHo New York" },
-  { name:"Dudley's", wijk:"Lower East Side", cat:"Eten & drinken", lat:40.7181, lng:-73.9904, q:"Dudley's restaurant Lower East Side New York" },
-  { name:"Lady Jay's", wijk:"Brooklyn", cat:"Eten & drinken", lat:40.7115, lng:-73.9468, q:"Lady Jay's bar Brooklyn New York" },
-];
-
-function initMap() {
-  if (map) return;
-  map = L.map('map', { zoomControl: true, attributionControl: false }).setView([40.7549, -73.9840], 13);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19
-  }).addTo(map);
-  renderMapMarkers();
-}
-
-function renderMapMarkers() {
-  markers.forEach(m => map.removeLayer(m));
-  markers = [];
-
-  const filtered = placesWithCoords.filter(p => mapCat === "Alle" || p.cat === mapCat);
-
-  filtered.forEach(p => {
-    const emoji = catEmoji[p.cat] || "📍";
-    const icon = L.divIcon({
-      html: `<div class="map-emoji-icon">${emoji}</div>`,
-      className: '',
-      iconSize: [32, 32],
-      iconAnchor: [16, 16],
-      popupAnchor: [0, -18]
-    });
-
-    const marker = L.marker([p.lat, p.lng], { icon }).addTo(map);
-    marker.bindPopup(`
-      <div class="popup-inner">
-        <div class="popup-name">${p.name}</div>
-        <div class="popup-wijk">${p.wijk}</div>
-        <a class="popup-btn" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.q)}" target="_blank">Open in Maps ↗</a>
-      </div>
-    `, { maxWidth: 220 });
-    markers.push(marker);
-  });
-}
-
-function buildMapCatFilters() {
-  const cats = ["Alle", ...["Observatory","Museum","Attractie","Wijk","Markt","Eten & drinken"]];
-  const el = document.getElementById("map-cat-filters");
-  el.innerHTML = "";
-  cats.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.className = "chip" + (mapCat === cat ? " active" : "");
-    const emoji = catEmoji[cat] ? catEmoji[cat] + " " : "";
-    btn.textContent = emoji + cat;
-    btn.onclick = () => {
-      mapCat = cat;
-      buildMapCatFilters();
-      renderMapMarkers();
-    };
-    el.appendChild(btn);
-  });
-}
-
-const origSwitchTab = switchTab;
-function switchTab(tab) {
-  origSwitchTab(tab);
-  if (tab === 'kaart') {
-    setTimeout(() => {
-      initMap();
-      buildMapCatFilters();
-      map.invalidateSize();
-    }, 50);
-  }
-}
-
 </script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
